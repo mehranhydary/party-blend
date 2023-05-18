@@ -4,3 +4,6 @@
 [submodule "lib/solmate"]
 	path = lib/solmate
 	url = https://github.com/rari-capital/solmate
+[submodule "lib/party-protocol"]
+	path = lib/party-protocol
+	url = https://github.com/PartyDAO/party-protocol
