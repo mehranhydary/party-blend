@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-import "lib/solmate/src/tokens/ERC721.sol";
+import "solmate/tokens/ERC721.sol";
 import "./ExchangeStructs.sol";
 
 struct LienPointer {

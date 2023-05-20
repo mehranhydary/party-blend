@@ -1,4 +1,4 @@
-# Party Borrow
+# Party Blend
 
 Leverage Party DAO to pool NFTs together and use Blur's Blend product.
 
