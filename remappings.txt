@@ -3,5 +3,5 @@ erc4626-tests/=lib/party-protocol/lib/openzeppelin-contracts/lib/erc4626-tests/
 forge-std/=lib/forge-std/src/
 @openzeppelin/contracts-upgradeable=lib/openzeppelin-contracts-upgradeable/contracts
 openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts
-party-protocol/=lib/party-protocol/
+party-protocol/=lib/party-protocol/contracts/
 solmate/=lib/party-protocol/lib/solmate/src/
