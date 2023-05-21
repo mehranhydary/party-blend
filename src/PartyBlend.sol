@@ -60,4 +60,21 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
             }
         }
     }
+
+    // Need to always specify the tokens you want to withdraw
+    function withdrawNfts(uint256[] memory tokenIds) external {
+        require(tokenIds.length > 0, "Must withdraw at least one token");
+        require(tokenIds.length <= nftDeposits[msg.sender], "Not enough NFTs");
+        for (uint256 i = 0; i < tokenIds.length; ) {
+            ERC721(nftAddress).safeTransferFrom(
+                address(this),
+                msg.sender,
+                tokenIds[i]
+            );
+            nftDeposits[msg.sender] -= 1;
+            unchecked {
+                i++;
+            }
+        }
+    }
 }
