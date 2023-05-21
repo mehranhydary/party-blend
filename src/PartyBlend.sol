@@ -8,7 +8,6 @@ pragma solidity ^0.8.13;
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
-
 import {ERC721, ERC721TokenReceiver} from "solmate/tokens/ERC721.sol";
 
 // The goal of Party Blend is to raise NFTs and then use the NFTs on Blur's Blend Protocol

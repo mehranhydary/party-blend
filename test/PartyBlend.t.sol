@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import {PartyBlend} from "../src/PartyBlend.sol";
 import {ERC721Mock} from "openzeppelin-contracts/mocks/ERC721Mock.sol";
-import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
+import {ERC721} from "solmate/tokens/ERC721.sol";
 
 contract PartyBlendTest is Test {
     PartyBlend partyBlend;
@@ -43,7 +43,7 @@ contract PartyBlendTest is Test {
         uint256[] memory tokenIds = new uint256[](1);
         tokenIds[0] = 0;
         vm.startPrank(msg.sender);
-        IERC721(address(mockERC721)).approve(address(partyBlend), 0);
+        ERC721(address(mockERC721)).approve(address(partyBlend), 0);
         partyBlend.depositNft(tokenIds);
         vm.stopPrank();
         assertEq(partyBlend.nftDeposits(msg.sender), 1);
@@ -54,7 +54,7 @@ contract PartyBlendTest is Test {
         tokenIds[0] = 0;
         tokenIds[1] = 1;
         vm.startPrank(msg.sender);
-        IERC721(address(mockERC721)).setApprovalForAll(
+        ERC721(address(mockERC721)).setApprovalForAll(
             address(partyBlend),
             true
         );
