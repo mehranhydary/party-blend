@@ -3,12 +3,18 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import {PartyBlend} from "../src/PartyBlend.sol";
+import {ERC721Mock} from "openzeppelin-contracts/mocks/ERC721Mock.sol";
+import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
 
 contract PartyBlendTest is Test {
     PartyBlend partyBlend;
+    ERC721Mock mockERC721;
 
     function setUp() public {
-        partyBlend = new PartyBlend();
+        mockERC721 = new ERC721Mock("Mock NFT", "MOCK");
+        mockERC721.mint(msg.sender, 0);
+        mockERC721.mint(msg.sender, 1);
+        partyBlend = new PartyBlend(address(mockERC721));
     }
 
     function test_addEth() public {
@@ -31,5 +37,15 @@ contract PartyBlendTest is Test {
         partyBlend.withdrawEth(amount);
         assertEq(address(partyBlend).balance, 0);
         assertEq(partyBlend.getEthDepositAmount(msg.sender), 0);
+    }
+
+    function test_depositNft() public {
+        uint256[] memory tokenIds = new uint256[](1);
+        tokenIds[0] = 0;
+        vm.startPrank(msg.sender);
+        IERC721(address(mockERC721)).approve(address(partyBlend), 0);
+        partyBlend.depositNft(tokenIds);
+        vm.stopPrank();
+        assertEq(partyBlend.nftDeposits(msg.sender), 1);
     }
 }
