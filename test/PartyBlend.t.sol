@@ -48,4 +48,18 @@ contract PartyBlendTest is Test {
         vm.stopPrank();
         assertEq(partyBlend.nftDeposits(msg.sender), 1);
     }
+
+    function test_depositNfts() public {
+        uint256[] memory tokenIds = new uint256[](2);
+        tokenIds[0] = 0;
+        tokenIds[1] = 1;
+        vm.startPrank(msg.sender);
+        IERC721(address(mockERC721)).setApprovalForAll(
+            address(partyBlend),
+            true
+        );
+        partyBlend.depositNft(tokenIds);
+        vm.stopPrank();
+        assertEq(partyBlend.nftDeposits(msg.sender), 2);
+    }
 }
