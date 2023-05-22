@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import {PartyBlend} from "../src/PartyBlend.sol";
+import {IBlurPool} from "../src/interfaces/IBlurPool.sol";
 import {ERC721Mock} from "openzeppelin-contracts/mocks/ERC721Mock.sol";
 import {ERC721} from "solmate/tokens/ERC721.sol";
 
@@ -81,5 +82,18 @@ contract PartyBlendTest is Test {
         assertEq(mockERC721.ownerOf(1), msg.sender);
     }
 
-    function test_depositIntoBlur() public {}
+    function test_depositIntoBlur() public {
+        uint256 amount = 1 ether;
+        vm.startPrank(msg.sender);
+        (bool isTransferred, ) = address(partyBlend).call{value: amount}("");
+        assert(isTransferred);
+        partyBlend.depositEthIntoBlur(amount);
+        vm.stopPrank();
+        assertEq(
+            IBlurPool(0x0000000000A39bb272e79075ade125fd351887Ac).balanceOf(
+                address(partyBlend)
+            ),
+            amount
+        );
+    }
 }
