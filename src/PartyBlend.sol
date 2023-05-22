@@ -9,6 +9,7 @@ pragma solidity ^0.8.13;
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 import {ERC721, ERC721TokenReceiver} from "solmate/tokens/ERC721.sol";
+import {IBlurPool} from "./interfaces/IBlurPool.sol";
 
 // The goal of Party Blend is to raise NFTs and then use the NFTs on Blur's Blend Protocol
 // Can only handle one NFT collection at a time
@@ -62,6 +63,7 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
     }
 
     // Need to always specify the tokens you want to withdraw
+    // Note: Do we need to add restrictions re. who can withdraw what token id?
     function withdrawNfts(uint256[] memory tokenIds) external {
         require(tokenIds.length > 0, "Must withdraw at least one token");
         require(tokenIds.length <= nftDeposits[msg.sender], "Not enough NFTs");
@@ -76,5 +78,13 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
                 i++;
             }
         }
+    }
+
+    function depositEthIntoBlur(uint256 amount) external {
+        require(amount <= address(this).balance, "Not enough ETH in contract");
+        require(amount <= ethDeposits[msg.sender], "Not enough ETH deposited");
+        IBlurPool(0x0000000000A39bb272e79075ade125fd351887Ac).deposit{
+            value: amount
+        }();
     }
 }

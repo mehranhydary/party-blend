@@ -80,4 +80,6 @@ contract PartyBlendTest is Test {
         assertEq(mockERC721.ownerOf(0), msg.sender);
         assertEq(mockERC721.ownerOf(1), msg.sender);
     }
+
+    function test_depositIntoBlur() public {}
 }
