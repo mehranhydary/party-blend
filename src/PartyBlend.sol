@@ -87,4 +87,15 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
             value: amount
         }();
     }
+
+    function withdrawEthFromBlur(uint256 amount) external {
+        IBlurPool blurPool = IBlurPool(
+            0x0000000000A39bb272e79075ade125fd351887Ac
+        );
+        require(
+            amount <= blurPool.balanceOf(address(this)),
+            "Not enough ETH deposited"
+        );
+        blurPool.withdraw(amount);
+    }
 }

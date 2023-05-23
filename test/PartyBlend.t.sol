@@ -96,4 +96,26 @@ contract PartyBlendTest is Test {
             amount
         );
     }
+
+    function test_withdrawDepositFromBlur() public {
+        uint256 amount = 1 ether;
+        vm.startPrank(msg.sender);
+        (bool isTransferred, ) = address(partyBlend).call{value: amount}("");
+        assert(isTransferred);
+        partyBlend.depositEthIntoBlur(amount);
+        assertEq(
+            IBlurPool(0x0000000000A39bb272e79075ade125fd351887Ac).balanceOf(
+                address(partyBlend)
+            ),
+            amount
+        );
+        partyBlend.withdrawEthFromBlur(amount);
+        vm.stopPrank();
+        assertEq(
+            IBlurPool(0x0000000000A39bb272e79075ade125fd351887Ac).balanceOf(
+                address(partyBlend)
+            ),
+            0
+        );
+    }
 }
