@@ -106,6 +106,11 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
             address(0x29469395eAf6f95920E59F858042f0e28D98a20B), // Blend address
             true
         );
-        IBlend(0x29469395eAf6f95920E59F858042f0e28D98a20B)
+        // IBlend(0x29469395eAf6f95920E59F858042f0e28D98a20B).borrow(
+        //     offer,
+        //     signature,
+        //     loanAmount,
+        //     collateralId
+        // );
     }
 }
