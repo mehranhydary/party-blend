@@ -10,6 +10,8 @@ import {ERC721} from "solmate/tokens/ERC721.sol";
 contract PartyBlendTest is Test {
     PartyBlend partyBlend;
     ERC721Mock mockERC721;
+    address MILADY_TOKEN = 0x5Af0D9827E0c53E4799BB226655A1de152A425a5;
+    address MILADY_WHALE = 0xB35248FeEB246b850Fac690a1BEaF5130dC71894;
 
     function setUp() public {
         mockERC721 = new ERC721Mock("Mock NFT", "MOCK");
@@ -119,5 +121,48 @@ contract PartyBlendTest is Test {
         );
     }
 
-    function test_addMiladysToContract() public {}
+    function test_addMiladysToContract() public {
+        ERC721 milady = ERC721(MILADY_TOKEN);
+        partyBlend = new PartyBlend(MILADY_TOKEN);
+        vm.startPrank(MILADY_WHALE);
+        uint256[] memory tokenIds = new uint256[](2);
+        ERC721(address(MILADY_TOKEN)).setApprovalForAll(
+            address(partyBlend),
+            true
+        );
+        tokenIds[0] = uint256(
+            0x000000000000000000000000000000000000000000000000000000000000079E
+        );
+        tokenIds[1] = uint256(
+            0x00000000000000000000000000000000000000000000000000000000000005E0
+        );
+        partyBlend.depositNft(tokenIds);
+        vm.stopPrank();
+        assertEq(partyBlend.nftDeposits(MILADY_WHALE), 2);
+        assertEq(milady.balanceOf(address(partyBlend)), 2);
+    }
+
+    function test_borrowAgainstMiladys() public {
+        ERC721 milady = ERC721(MILADY_TOKEN);
+        partyBlend = new PartyBlend(MILADY_TOKEN);
+        vm.startPrank(MILADY_WHALE);
+        uint256[] memory tokenIds = new uint256[](2);
+        ERC721(address(MILADY_TOKEN)).setApprovalForAll(
+            address(partyBlend),
+            true
+        );
+        tokenIds[0] = uint256(
+            0x000000000000000000000000000000000000000000000000000000000000079E
+        );
+        tokenIds[1] = uint256(
+            0x00000000000000000000000000000000000000000000000000000000000005E0
+        );
+        partyBlend.depositNft(tokenIds);
+        vm.stopPrank();
+        assertEq(partyBlend.nftDeposits(MILADY_WHALE), 2);
+        assertEq(milady.balanceOf(address(partyBlend)), 2);
+
+        // New code!
+        // Need auction data before we can make on chain transactions... see if triple a has a solution
+    }
 }

@@ -10,6 +10,7 @@ import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 import {ERC721, ERC721TokenReceiver} from "solmate/tokens/ERC721.sol";
 import {IBlurPool} from "./interfaces/IBlurPool.sol";
+import {IBlend} from "./interfaces/IBlend.sol";
 
 // The goal of Party Blend is to raise NFTs and then use the NFTs on Blur's Blend Protocol
 // Can only handle one NFT collection at a time
@@ -97,5 +98,14 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
             "Not enough ETH deposited"
         );
         blurPool.withdraw(amount);
+    }
+
+    function borrowEthAgainstNfts() external {
+        // Only do this if not approved already
+        ERC721(address(nftAddress)).setApprovalForAll(
+            address(0x29469395eAf6f95920E59F858042f0e28D98a20B), // Blend address
+            true
+        );
+        IBlend(0x29469395eAf6f95920E59F858042f0e28D98a20B)
     }
 }
