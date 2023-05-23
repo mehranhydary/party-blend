@@ -118,4 +118,6 @@ contract PartyBlendTest is Test {
             0
         );
     }
+
+    function test_addMiladysToContract() public {}
 }
