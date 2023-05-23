@@ -13,6 +13,8 @@ import {IBlurPool} from "./interfaces/IBlurPool.sol";
 import {IBlend} from "./interfaces/IBlend.sol";
 import {Pair} from "caviar/Pair.sol";
 
+// import {CaviarZapRouter} from "caviar/CaviarZapRouter.sol";
+
 // The goal of Party Blend is to raise NFTs and then use the NFTs on Blur's Blend Protocol
 // Can only handle one NFT collection at a time
 contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
@@ -113,5 +115,16 @@ contract PartyBlend is ReentrancyGuard, Ownable, ERC721TokenReceiver {
         //     loanAmount,
         //     collateralId
         // );
+    }
+
+    function addLpToCaviar(uint256[] calldata tokenIds) external {
+        // Approve the router contract
+        ERC721(address(nftAddress)).setApprovalForAll(
+            address(0x6689679dAB35fb3Fc50bb4E5fD82C86A62a2cb8D), // Milady pair address
+            true
+        );
+        Pair miladyPair = Pair(0x6689679dAB35fb3Fc50bb4E5fD82C86A62a2cb8D);
+        // Call: buyAndAdd in the Router contract or wrap, add, etc. via Pair contract
+        // Need to use the Caviar API to generate the order data
     }
 }
